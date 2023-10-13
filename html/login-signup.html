@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Sign-Up</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 400px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        
+        body{
+        background-color: lightgrey;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <div class="form-group">
+            <input type="email" class="form-control" id="loginEmail" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" id="loginPassword" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+</div>
+
+<div class="container mt-5">
+    <h2>Sign-Up</h2>
+    <form id="signupForm">
+        <div class="form-group">
+            <input type="text" class="form-control" id="signupName" placeholder="Name" required>
+        </div>
+        <div class="form-group">
+            <input type="email" class="form-control" id="signupEmail" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" id="signupPassword" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-success btn-block">Sign-Up</button>
+    </form>
+</div>
+
+<!-- Add Bootstrap JS and jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Store user data in local storage
+    function storeUserData(email, password) {
+        const userData = {
+            email: email,
+            password: password
+        };
+        localStorage.setItem(email, JSON.stringify(userData));
+    }
+
+    // Login form submission
+    $("#loginForm").submit(function (e) {
+        e.preventDefault();
+        const loginEmail = $("#loginEmail").val();
+        const loginPassword = $("#loginPassword").val();
+
+        const userData = JSON.parse(localStorage.getItem(loginEmail));
+        if (userData && userData.password === loginPassword) {
+            alert("Login successful!");
+            window.location.href = "home.html"; // Redirect to the home page
+        } else {
+            alert("Login failed. Please check your email and password.");
+        }
+    });
+
+    // Sign-up form submission
+    $("#signupForm").submit(function (e) {
+        e.preventDefault();
+        const signupName = $("#signupName").val();
+        const signupEmail = $("#signupEmail").val();
+        const signupPassword = $("#signupPassword").val();
+
+        if (localStorage.getItem(signupEmail)) {
+            alert("An account with this email already exists.");
+        } else {
+            storeUserData(signupEmail, signupPassword);
+            alert("Sign-up successful! You can now log in.");
+        }
+    });
+</script>
+
+</body>
+</html>

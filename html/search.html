@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Search</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+
+<style>
+    body{
+        background-color: lightgrey;
+    }
+</style>
+<body>
+    <div class="container text-center">
+        <h1>Image Search</h1>
+        <form id="search-form" class="mt-4">
+            <div class="input-group">
+                <input type="text" id="search-query" class="form-control" placeholder="Search for images..." required>
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="mt-4" id="image-results"></div>
+    </div>
+
+
+    
+   
+
+    <!-- Add Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Event listener for the form submission
+        document.getElementById("search-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            searchImages();
+        });
+
+        // Function to search for images
+        function searchImages() {
+            const query = document.getElementById("search-query").value;
+            const apiKey = "nZu2PU1S4gagSkNRKjTtNw6t_O7DKx4BrdwXp2CJkrA"; // Replace with your API key
+            const apiUrl = `https://api.unsplash.com/search/photos?query=${query}&client_id=${apiKey}`;
+
+            // Fetch images from the API
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    displayImages(data.results);
+                })
+                .catch(error => console.error(error));
+        }
+
+        // Function to display the search results
+        function displayImages(images) {
+            const imageResults = document.getElementById("image-results");
+            imageResults.innerHTML = "";
+
+            if (images.length === 0) {
+                imageResults.innerHTML = "<p>No images found.</p>";
+            } else {
+                images.forEach(image => {
+                    const imgElement = document.createElement("img");
+                    imgElement.src = image.urls.small;
+                    imgElement.classList.add("img-thumbnail", "m-2");
+                    imageResults.appendChild(imgElement);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
